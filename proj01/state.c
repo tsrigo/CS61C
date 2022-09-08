@@ -41,24 +41,24 @@ game_state_t *create_default_state()
   res->snakes = snake;
 
   char *t_board[19] = {
-      "####################",
-      "#                  #",
-      "# d>D    *         #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "#                  #",
-      "####################"};
+      "####################\n",
+      "#                  #\n",
+      "# d>D    *         #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "#                  #\n",
+      "####################\n"};
   for (int i = 0; i < 18; i++)
   {
     board[i] = malloc(sizeof(char) * 21);
@@ -90,7 +90,7 @@ void print_board(game_state_t *state, FILE *fp)
 {
   // TODO: Implement this function.
   for (int i = 0; i < state->num_rows; i ++ ){
-    fprintf(fp,"%s\n" ,state->board[i]);
+    fprintf(fp,"%s" ,state->board[i]);
   }
   return;
 }
@@ -323,8 +323,38 @@ void update_state(game_state_t *state, int (*add_food)(game_state_t *state))
 /* Task 5 */
 game_state_t *load_board(char *filename)
 {
-  // TODO: Implement this function.
-  return NULL;
+  FILE *ptr;
+  ptr = fopen(filename, "r");
+  if (ptr == NULL) return NULL;
+
+  game_state_t *res = malloc(sizeof(game_state_t));
+  if (res == NULL) return NULL;
+
+  char str[100];
+  char *tep[100];
+
+  unsigned int cnt = 0;
+
+  while (fgets(str, 100, ptr) != NULL){
+    char *line = malloc(strlen(str) + 1); // 留一个位给空字符
+    if (line == NULL) return NULL;
+    strcpy(line, str);
+
+    tep[cnt] = line;
+    cnt ++ ;
+  }
+  
+  char **board = malloc(sizeof(char) * 8 * cnt);
+  for (int i = 0; i < cnt; i ++ ){
+    board[i] = tep[i];
+  }
+
+  fclose(ptr);  // 记得关掉噢
+
+  res->num_rows = cnt;
+  res->board = board;
+
+  return res;
 }
 
 /*
