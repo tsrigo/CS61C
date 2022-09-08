@@ -330,12 +330,12 @@ game_state_t *load_board(char *filename)
   game_state_t *res = malloc(sizeof(game_state_t));
   if (res == NULL) return NULL;
 
-  char str[100];
-  char *tep[100];
+  char str[100010]; // 地图的长宽最大都可以达到10^5，所以之前只开 100 是不够的
+  char *tep[100010];
 
   unsigned int cnt = 0;
 
-  while (fgets(str, 100, ptr) != NULL){
+  while (fgets(str, 100010, ptr) != NULL){
     char *line = malloc(strlen(str) + 1); // 留一个位给空字符
     if (line == NULL) return NULL;
     strcpy(line, str);
