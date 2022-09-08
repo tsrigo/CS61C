@@ -61,7 +61,7 @@ game_state_t *create_default_state()
       "####################\n"};
   for (int i = 0; i < 18; i++)
   {
-    board[i] = malloc(sizeof(char) * 21);
+    board[i] = malloc(sizeof(char) * 22); // 这里注意要加上零字符
     if (board[i] == NULL)
       return NULL;
     strcpy(board[i], t_board[i]);
@@ -368,6 +368,17 @@ game_state_t *load_board(char *filename)
 static void find_head(game_state_t *state, unsigned int snum)
 {
   // TODO: Implement this function.
+  snake_t *snake = &(state->snakes[snum]);
+  unsigned int ansR = snake->tail_row, ansC = snake->tail_col;
+  char cur = get_board_at(state, ansR, ansC);
+
+  while(!is_head(cur)){
+    ansR = get_next_row(ansR, cur), ansC = get_next_col(ansC, cur);
+    cur = get_board_at(state, ansR, ansC);
+  }
+
+  snake->head_col = ansC, snake->head_row = ansR;
+
   return;
 }
 
